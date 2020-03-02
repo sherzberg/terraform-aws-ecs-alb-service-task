@@ -38,7 +38,7 @@ resource "aws_ecs_task_definition" "default" {
   network_mode             = var.network_mode
   cpu                      = var.task_cpu
   memory                   = var.task_memory
-  execution_role_arn       = join("", aws_iam_role.ecs_exec.*.arn)
+  # execution_role_arn       = join("", aws_iam_role.ecs_exec.*.arn)
   task_role_arn            = join("", aws_iam_role.ecs_task.*.arn)
   tags                     = module.default_label.tags
 
@@ -384,7 +384,7 @@ resource "aws_ecs_service" "default" {
 
   cluster        = var.ecs_cluster_arn
   propagate_tags = var.propagate_tags
-  tags           = module.default_label.tags
+  tags           = var.enable_ecs_managed_tags ? module.default_label.tags : null
 
   deployment_controller {
     type = var.deployment_controller_type
